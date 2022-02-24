@@ -29,8 +29,9 @@ def parse_args():
 
 args = parse_args()
 device = torch.device('cpu')
-modelpath = "model-DAVE2v3-lr1e4-100epoch-batch64-lossMSE-28Ksamples-135x240-noiseflipblur.pt"
+modelpath = "model-DAVE2PytorchModel-lr1e4-100epoch-batch64-lossMSE-82Ksamples-INDUSTRIALandHIROCHIandUTAH-135x240-noiseflipblur.pt"
 model = torch.load(modelpath, map_location=device)
+print(model)
 dataset = DataSequence(args.testsetpath, transform=Compose([ToTensor()]))
 roadmiddle, roadleft, roadright = intake_racetrack()
 
@@ -43,13 +44,13 @@ def worker_init_fn(worker_id):
 
 BATCH_SIZE=1
 testloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=False, worker_init_fn=worker_init_fn)
-failure_point = [275, -45]
+failure_point = [150, -175]
 testdir = "testoutput"
 if not os.path.exists(testdir):
     os.mkdir(testdir)
 okay_points = []
 error_points = []
-error_threshold = 0.1
+error_threshold = 0.33
 for i, hashmap in enumerate(testloader, 0):
     sample_num = int(hashmap['filename'][0].strip("sample-").strip(".jpg"))
     position = literal_eval(hashmap['position'][0].replace("  ",","))
@@ -58,14 +59,14 @@ for i, hashmap in enumerate(testloader, 0):
     x = hashmap['image'].float().to(device)
     y = hashmap['steering_input'].float().to(device)
     outputs = model(x)
-    if round(abs(outputs.item() - y.item()), 1) >= error_threshold:
+    if abs(outputs.item() - y.item()) > error_threshold:
         error_points.append(pos)
     else:
         okay_points.append(pos)
     dist_to_fail = math.sqrt(math.pow(pos[0] - failure_point[0], 2) + math.pow(pos[1] - failure_point[1], 2))
-    if dist_to_fail < 5:
+    if dist_to_fail < 10:
         print(f"{hashmap['filename'][0]}\tcorrect output={y.item():.3f}\tmodel output={outputs.item():.3f}\t\terror={outputs.item()-y.item():.3f}")
-        if abs(outputs.item() - y.item()) > 0.1:
+        if round(abs(outputs.item() - y.item()), 1) >= error_threshold:
             plt.title(f"error={outputs.item()-y.item():.3f}", color="red")
         else:
             plt.title(f"error={outputs.item() - y.item():.3f}", color="black")
@@ -81,4 +82,4 @@ plt.plot([i[0] for i in okay_points], [i[1] for i in okay_points], "b")
 plt.scatter([i[0] for i in error_points], [i[1] for i in error_points], s=10, c="red")
 plt.title(f"Error greater than {error_threshold}")
 plt.draw()
-plt.savefig("testoutput/fault2-weak-points.jpg")
+plt.savefig(f"testoutput/fault3-weakpoints-error{error_threshold}.jpg")

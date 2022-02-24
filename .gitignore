@@ -2,8 +2,8 @@
 test-set/*
 */__pycache__/*
 error-segments/
-Fault1/seg3
-Fault2/seg3-testoutput
-Fault2/testoutput
+Fault1/testoutput/sample-*.jpg
+Fault2/testoutput/sample-*.jpg
+Fault3/testoutput/sample-*.jpg
 industrial-track-lap
 

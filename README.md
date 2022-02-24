@@ -3,6 +3,7 @@ Reproducing system-level autonomous driving failures caused by deep learning fau
 
 # Faults
 
-## Fault 1
-
-![Error on lefthand turn](images/error-on-lefthand-curve.gif)
+The system under test is an autonomous car whose steering is controlled by a DNN.
+The DNN is a version of DAVE2. 
+Failures were first noticed when controlling the car in the BeamNG driving simulator.
+Failures are reproduced on a validation set of one lap around a closed racetrack. 

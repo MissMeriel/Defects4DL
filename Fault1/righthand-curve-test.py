@@ -36,7 +36,7 @@ BATCH_SIZE=1
 testloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=False, worker_init_fn=worker_init_fn)
 import re
 # testdir = f"{os.getcwd().strip('tests')}error-segments/seg3"
-testdir = "seg3-testoutput"
+testdir = "testoutput"
 if not os.path.exists(testdir):
     os.mkdir(testdir)
 for i, hashmap in enumerate(testloader, 0):
