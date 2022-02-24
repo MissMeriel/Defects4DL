@@ -64,7 +64,7 @@ for i, hashmap in enumerate(testloader, 0):
     dist_to_fail = math.sqrt(math.pow(pos[0] - failure_point[0], 2) + math.pow(pos[1] - failure_point[1], 2))
     if dist_to_fail < 5:
         print(f"{hashmap['filename'][0]}\tcorrect output={y.item():.3f}\tmodel output={outputs.item():.3f}\t\terror={outputs.item()-y.item():.3f}")
-        if abs(outputs.item() - y.item()) > 0.75:
+        if abs(outputs.item() - y.item()) > 0.1:
             plt.title(f"error={outputs.item()-y.item():.3f}", color="red")
         else:
             plt.title(f"error={outputs.item() - y.item():.3f}", color="black")
