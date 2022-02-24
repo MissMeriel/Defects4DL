@@ -2,4 +2,7 @@
 test-set/*
 */__pycache__/*
 error-segments/
+Fault1/seg3
+Fault2/seg3-testoutput
+Fault2/testoutput
 
