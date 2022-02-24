@@ -1,27 +1,26 @@
 import math
 import os
-
+import numpy as np
 import matplotlib.pyplot as plt
 import torch
 import argparse
 from pathlib import Path
 from models import DAVE2pytorch
 from DatasetGenerator import DataSequence
-from torch.utils.data import DataLoader, TensorDataset
-from torchvision.transforms import Compose, ToPILImage, ToTensor, Resize, Lambda, Normalize
-from torch.autograd import Variable
+from torch.utils.data import DataLoader
+from torchvision.transforms import Compose, ToTensor
 
-import numpy as np
+
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("modelpath", type=Path)
+    # parser.add_argument("modelpath", type=Path)
     parser.add_argument("testsetpath", type=Path)
     return parser.parse_args()
 
 args = parse_args()
-device = torch.device('cpu')
-modelpath = "C:/Users/Meriel/Documents/GitHub/Defects4DL/trained-models/model-DAVE2v3-lr1e4-100epoch-batch64-lossMSE-25Ksamples-135x240-noiseflipblur.pt"
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+modelpath = "model-DAVE2v3-lr1e4-100epoch-batch64-lossMSE-25Ksamples-135x240-noiseflipblur.pt"
 model = torch.load(modelpath, map_location=device)
 dataset = DataSequence(args.testsetpath, transform=Compose([ToTensor()]))
 
@@ -36,7 +35,8 @@ def worker_init_fn(worker_id):
 BATCH_SIZE=1
 testloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=False, worker_init_fn=worker_init_fn)
 import re
-testdir = f"{os.getcwd().strip('tests')}error-segments/seg3"
+# testdir = f"{os.getcwd().strip('tests')}error-segments/seg3"
+testdir = "seg3-testoutput"
 if not os.path.exists(testdir):
     os.mkdir(testdir)
 for i, hashmap in enumerate(testloader, 0):
@@ -59,3 +59,8 @@ for i, hashmap in enumerate(testloader, 0):
     # what constitutes a static error? left turn when close to the left side of the track?
 
     # need track datapoints for left/right/center
+
+
+    # model_name = "model-DAVE2v3-lr1e4-50epoch-batch64-lossMSE-25Ksamples.pt" #orig, NIER results DNN
+    # model_name = "model-DAVE2PytorchModel-lr1e4-100epoch-batch64-lossMSE-82Ksamples-INDUSTRIALandHIROCHIandUTAH-135x240-noiseflipblur.pt"
+    # model_name = "model-DAVE2v2-lr1e4-100epoch-batch64-lossMSE-82Ksamples-INDUSTRIALandHIROCHIandUTAH-135x240-noiseflipblur.pt"
