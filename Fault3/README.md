@@ -6,13 +6,17 @@ However, this model has a different architecture that reduces the number of drop
 The `MaxPool2D` layers in the "correct DNN" may have improved the generalization of the model.
 Without maxpooling, this DNN struggles on an increased speed setpoint from 40KPH to 60KPH (25MPH to 37MPH).
 
-40KPH trajectory:
+**40KPH trajectory in online test:**
+
 ![40KPH trajectory](DAVE2PytorchModel-40kph-runtime77.37-distance775.16.jpg)
+
 This closely mirrors the expected trajectory of the "correct" DNN. 
 The car struggles more than the "correct" DNN on the last turn, but otherwise the two trajectories are identical.
 
-60KPH trajectory:
+**60KPH trajectory in online test:**
+
 ![60KPH trajectory](DAVE2PytorchModel-60kph-runtime54.10-distance698.52.jpg)
+
 The car goes from severely cutting the corners to overshooting them, and recovers poorly from a turn on the 4th straightaway section.
 Finally, it fails to make the 2nd-to-last turn, instead running straight off the road.
 

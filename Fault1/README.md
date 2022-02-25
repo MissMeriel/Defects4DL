@@ -26,4 +26,7 @@ DAVE2v3(
 ```
 
 ## Test output
+
+When checking the error on the lefthand curve that the online test fails to navigate, we see exceptionally high error directed to the right:
+
 ![Error on lefthand turn](testoutput/error-on-lefthand-curve.gif)

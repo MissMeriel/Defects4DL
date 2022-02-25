@@ -2,7 +2,7 @@
 
 In this fault, we see the car take a gradual left turn off the road on a straightaway.
 
-![](model-DAVE2v3-lr1e4-100epoch-batch64-lossMSE-28Ksamples-135x240-noiseflipblur.pt-fault-traj.png)
+![gradual left on straightaway](model-DAVE2v3-lr1e4-100epoch-batch64-lossMSE-28Ksamples-135x240-noiseflipblur.pt-fault-traj.png)
 
 This DNN has the same architecture and 3,000 more training samples than the DNN in [Fault 1](../Fault1).
 These additional training samples are from a "swerving" dataset to help the DNN learn recovery maneuvers.
